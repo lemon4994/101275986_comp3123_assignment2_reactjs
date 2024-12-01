@@ -31,6 +31,11 @@ function EmployeeList() {
         navigate("/employees/add");
     }
 
+    const handleEditEmployee = (id) => {
+        console.log("Edit Employee ID:", id);
+        navigate(`/employees/${id}`);
+    }
+
     return (
         <TableContainer component={Paper} sx={{
             width: '90%',
@@ -79,13 +84,13 @@ function EmployeeList() {
                 </TableHead>
                 <TableBody>
                     {employeeList.map((employee) => (
-                        <TableRow key={employee.id}>
+                        <TableRow key={employee._id}>
                             <TableCell>{employee.first_name} {employee.last_name}</TableCell>
                             <TableCell>{employee.email}</TableCell>
                             <TableCell>{employee.position}</TableCell>
                             <TableCell>{employee.department}</TableCell>
                             <TableCell>
-                                <Button variant="contained" color="primary">View</Button>
+                                <Button variant="contained" color="primary" onClick={() => handleEditEmployee(employee._id)}>View/Edit</Button>
                             </TableCell>
                         </TableRow>
                     ))}

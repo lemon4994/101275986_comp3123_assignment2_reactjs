@@ -36,7 +36,8 @@ const SignUpLink = async (form) => {
 
   const CreateEmployeeLink = async (form) => {
     try {
-      const response = await axios.post(`http://localhost:3010/api/v1/emp/employees`, {
+
+      const payload = {
         first_name: form.first_name,
         last_name: form.last_name,
         email: form.email,
@@ -44,7 +45,11 @@ const SignUpLink = async (form) => {
         salary: form.salary,
         date_of_joining: form.date_of_joining,
         department: form.department,
-      })
+      }
+      if (form.date_of_joining) {
+        payload.date_of_joining = form.date_of_joining;
+      }
+      const response = await axios.post(`http://localhost:3010/api/v1/emp/employees`, payload)
       return response
     } catch (error) {
       console.error('Create Employee Error:', error.response ? error.response.data : error.message);
@@ -53,7 +58,7 @@ const SignUpLink = async (form) => {
 
   const FindEmployeeByIDLink = async (form) => {
     try {
-      const response = await axios.get(`http://localhost:3010/api/v1/emp/employees/${form.employeeId}`)
+      const response = await axios.get(`http://localhost:3010/api/v1/emp/employees/${form}`)
       return response.data
     } catch (error) {
       console.error('Find Employee Error:', error.response ? error.response.data : error.message);
@@ -73,6 +78,15 @@ const SignUpLink = async (form) => {
       return response
     } catch (error) { console.error('Update Employee Error:', error.response ? error.response.data : error.message); }
   }
+
+  const DeleteEmployeeLink = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3010/api/v1/emp/employees/${id}`)
+      return response
+    } catch (error) {
+      console.error('Delete Employee Error:', error.response ? error.response.data : error.message);
+    }
+  }
   
   export { SignUpLink };
 
@@ -85,3 +99,5 @@ const SignUpLink = async (form) => {
   export { FindEmployeeByIDLink };
 
   export { UpdateEmployeeLink };
+
+  export { DeleteEmployeeLink };

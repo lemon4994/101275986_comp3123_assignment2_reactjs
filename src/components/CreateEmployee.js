@@ -14,7 +14,7 @@ function CreateEmployee () {
         email: "",
         position: "",
         salary: "",
-        date_of_joining: "",
+        date_of_joining: undefined,
         department: ""
     });
 
