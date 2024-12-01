@@ -22,6 +22,8 @@ function EmployeeList() {
 
     const navigate = useNavigate();
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prevForm) => ({ ...prevForm, [name]: value }));
@@ -35,6 +37,19 @@ function EmployeeList() {
         console.log("Edit Employee ID:", id);
         navigate(`/employees/${id}`);
     }
+// f and l name, email, position, salary, date of joining, department, created at, updated at
+    const filteredEmployeeList = employeeList.filter((employee) => 
+        (employee.employeeId?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.first_name?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.last_name?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.email?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.position?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.salary?.toString().includes(searchQuery) || "") ||
+        (employee.date_of_joining?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.department?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.created_at?.toLowerCase().includes(searchQuery) || "") ||
+        (employee.updated_at?.toLowerCase().includes(searchQuery) || "")
+    );
 
     return (
         <TableContainer component={Paper} sx={{
@@ -50,28 +65,19 @@ function EmployeeList() {
             }}>
                 <Button variant="contained" color="primary" onClick={ handleCreateEmployee }>Create Employee</Button>
 
-                <Box sx={{
-                    display: 'flex',
-                    gap: '8px',
-                    alignItems: 'center',
-                }}>
                 <TextField
-                    label="Employee ID"
+                    label="Search"
                     variant="outlined"
-                    name="employee id"
+                    name="searchQuery"
                     value={form.employeeId}
-                    onChange={handleChange}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     sx={{
-                        '& .MuiInputLabel-root': {
-                          color: 'white',
-                        },
+                        width: '100%',
                         '& .MuiOutlinedInput-input': {
-                          color: 'white', 
+                            color: 'black',
                         },
-                      }}
+                    }}
                 />
-                <Button variant="contained" color="primary">Search</Button>
-                </Box>
             </Box>
             <Table>
                 <TableHead>
@@ -83,18 +89,24 @@ function EmployeeList() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {employeeList.map((employee) => (
-                        <TableRow key={employee._id}>
-                            <TableCell>{employee.first_name} {employee.last_name}</TableCell>
-                            <TableCell>{employee.email}</TableCell>
-                            <TableCell>{employee.position}</TableCell>
-                            <TableCell>{employee.department}</TableCell>
-                            <TableCell>
-                                <Button variant="contained" color="primary" onClick={() => handleEditEmployee(employee._id)}>View/Edit</Button>
-                            </TableCell>
+                    {filteredEmployeeList.length === 0 ? (
+                        <TableRow>
+                            <TableCell colSpan={4}>No Employees Found</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
+                    ) : (
+                        filteredEmployeeList.map((employee) => (
+                            <TableRow key={employee._id}>
+                                <TableCell>{employee.first_name} {employee.last_name}</TableCell>
+                                <TableCell>{employee.email}</TableCell>
+                                <TableCell>{employee.position}</TableCell>
+                                <TableCell>{employee.department}</TableCell>
+                                <TableCell>
+                                    <Button variant="contained" color="primary" onClick={() => handleEditEmployee(employee._id)}>View/Edit</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
+                    </TableBody>
             </Table>
         </TableContainer>
     )
