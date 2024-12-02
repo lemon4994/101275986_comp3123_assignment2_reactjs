@@ -5,8 +5,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { LogInLink } from "../API.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext.js";
 
-function LogIn({ onLoginSuccess}) {
+function LogIn({}) {
+
+  const { setIsLoggedIn } = useAuth();
 
     const [form, setForm] = useState({
         username: "",
@@ -26,6 +29,7 @@ function LogIn({ onLoginSuccess}) {
         try {
           const response = await LogInLink(form);
           if (response.status === 200) {
+            setIsLoggedIn(true);
             navigate("/employees");
           }
         } catch (error) { console.error("Log In Error:", error.response ? error.response.data : error.message); }

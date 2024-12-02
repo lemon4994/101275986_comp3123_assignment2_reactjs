@@ -3,11 +3,13 @@ import Stack from '@mui/material/Stack';
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { LogInLink } from "../API.js";
 import { useNavigate, useParams } from "react-router-dom";
 import { FindEmployeeByIDLink, UpdateEmployeeLink, DeleteEmployeeLink } from "../API.js";
+import { useAuth } from "../AuthContext.js";
 
 function EditEmployee () {
+    const { isLoggedIn } = useAuth();
+
     const { id } = useParams();
     const [employee, setEmployee] = useState({});
     console.log("Employee:", employee);
@@ -43,6 +45,12 @@ function EditEmployee () {
             });
         }
     }, [employee]);
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     const navigate = useNavigate();
 

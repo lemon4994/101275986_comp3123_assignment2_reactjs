@@ -3,9 +3,12 @@ import Box from '@mui/material/Box';
 import { EmployeeListLink } from "../API.js";
 import { TableCell, Table, TableBody, TableContainer, TableHead, TableRow, Button, Paper, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext.js";
 
 
 function EmployeeList() {
+    const { isLoggedIn } = useAuth();
+
     const [employeeList, setEmployeeList] = useState([]);
     useEffect(() => {
         const fetchEmployeeList = async () => {
@@ -50,6 +53,12 @@ function EmployeeList() {
         (employee.created_at?.toLowerCase().includes(searchQuery) || "") ||
         (employee.updated_at?.toLowerCase().includes(searchQuery) || "")
     );
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
 
     return (
         <TableContainer component={Paper} sx={{
