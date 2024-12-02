@@ -14,6 +14,7 @@ const SignUpLink = async (form) => {
   }
 
   const LogInLink = async (form) => {
+    console.log("test")
     try {
         const response = await axios.post('http://localhost:3010/api/v1/user/login', {
             username: form.username,
