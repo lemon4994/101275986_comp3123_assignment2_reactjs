@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, NavLink } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import EmployeeList from './components/EmployeeList.js';

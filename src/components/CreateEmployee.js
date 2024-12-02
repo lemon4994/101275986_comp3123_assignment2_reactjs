@@ -36,6 +36,10 @@ function CreateEmployee () {
         } catch (error) { console.error("Create Employee Error:", error.response ? error.response.data : error.message); }
     };
 
+    const handleCancel = () => {
+        navigate("/employees");
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
@@ -179,7 +183,14 @@ function CreateEmployee () {
                         },
                     }}
                 />
-                <Button type="submit" variant="contained" color="primary">Create Employee</Button>
+                <Stack spacing={2} direction="row" sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}>
+                    <Button variant="contained" color="primary" onClick={handleCancel}>Cancel</Button>
+                    <Button type="submit" variant="contained" color="primary">Create</Button>
+                </Stack>
             </Stack>
         </form>
     );

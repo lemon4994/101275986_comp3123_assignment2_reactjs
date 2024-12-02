@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
-import Stack from '@mui/material/Stack';
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Stack, TextField, Button, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { FindEmployeeByIDLink, UpdateEmployeeLink, DeleteEmployeeLink } from "../API.js";
 import { useAuth } from "../AuthContext.js";
 
 function EditEmployee () {
+    const [open, setOpen] = useState(false);
+    const [confirmName, setConfirmName] = useState("");
+    const [isConfirmed, setIsConfirmed] = useState(false);
+    
+    const navigate = useNavigate();
     const { isLoggedIn } = useAuth();
 
     const { id } = useParams();
@@ -52,8 +54,6 @@ function EditEmployee () {
         }
     }, [isLoggedIn, navigate]);
 
-    const navigate = useNavigate();
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prevForm) => ({ ...prevForm, [name]: value }));
@@ -74,6 +74,7 @@ function EditEmployee () {
     const handleCancel = () => {
         navigate("/employees");
     }
+    /*
     const handleDelete = async (id) => {
         try { 
             const response = await DeleteEmployeeLink(id);
@@ -81,6 +82,32 @@ function EditEmployee () {
                 navigate("/employees");
             }
         } catch (error) { console.error("Delete Employee Error:", error.response ? error.response.data : error.message); }
+    }
+    */
+    const handleDeleteClick = () => {
+        setOpen(true);
+    }
+
+    const handleDialogClose = () => {
+        setOpen(false);
+        setConfirmName("");
+        setIsConfirmed(false);
+    }
+    const handleNameChange = (e) => {
+        setConfirmName(e.target.value);
+    }
+    const handleConfirmDelete = async () => {
+        if (confirmName.toLowerCase() === employee.first_name.toLowerCase()) {
+            setIsConfirmed(true);
+            try { 
+                const response = await DeleteEmployeeLink(employee._id);
+                if (response.status === 204) {
+                    navigate("/employees");
+                }
+            } catch (error) { console.error("Delete Employee Error:", error.response ? error.response.data : error.message); }
+        } else {
+            alert("Name does not match. Please try again.");
+        }
     }
 
     if (!employee) return <Typography variant="h4">Loading ...</Typography>;
@@ -235,10 +262,27 @@ function EditEmployee () {
                 alignItems: 'center',
             }}>
                     <Button variant="contained" color="primary" onClick={handleCancel}>Cancel</Button>
-                    <Button variant="contained" color="primary" onClick={() => handleDelete(employee._id)}>Delete</Button>
+                    <Button variant="contained" color="primary" onClick={handleDeleteClick}>Delete</Button>
+                    <Button type="submit" variant="contained" color="primary">Update</Button>
                 </Stack>
-                <Button type="submit" variant="contained" color="primary">Update Employee</Button>
             </Stack>
+            
+            <Dialog open={open} onClose={handleDialogClose}>
+                <DialogTitle>Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Type the first name of the employee to confirm"
+                        variant="outlined"
+                        value={confirmName}
+                        onChange={handleNameChange}
+                        fullWidth
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose}>Cancel</Button>
+                    <Button onClick={handleConfirmDelete} disabled={!confirmName}>Confirm</Button>
+                </DialogActions>
+            </Dialog>
         </form>
     );
 
