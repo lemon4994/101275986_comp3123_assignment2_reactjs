@@ -27,10 +27,13 @@ function SignUp() {
         console.log("Form submitted:", form);
         try{
             const response = await SignUpLink(form);
-            if (response.status === 201) {
-                navigate("/");
+            if (response) {
+              navigate("/");
             }
-        } catch (error) { console.error("Sign Up Error:", error.response ? error.response.data : error.message); }
+        } catch (error) {
+          console.error("Sign Up Error:", error.response ? error.response.data : error.message);
+          alert("Duplicate username or email.");
+        }
     };
 
     return (

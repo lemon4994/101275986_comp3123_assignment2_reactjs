@@ -18,6 +18,7 @@ function App() {
             <LogoutButton />
             <Routes>
               <Route path="/" element={<LogIn />} />
+              <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/employees" element={<EmployeeList />} />
               <Route path="/employees/add" element={<CreateEmployee />} />

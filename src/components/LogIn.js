@@ -32,7 +32,10 @@ function LogIn({}) {
             setIsLoggedIn(true);
             navigate("/employees");
           }
-        } catch (error) { console.error("Log In Error:", error.response ? error.response.data : error.message); }
+        } catch (error) {
+          console.error("Log In Error:", error.response ? error.response.data : error.message);
+          alert("Invalid username or password.");
+        }
     };
 
     return (
