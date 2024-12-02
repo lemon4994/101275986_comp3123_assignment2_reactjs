@@ -268,10 +268,10 @@ function EditEmployee () {
             </Stack>
             
             <Dialog open={open} onClose={handleDialogClose}>
-                <DialogTitle>Confirm Deletion</DialogTitle>
+                <DialogTitle>Confirm Deletion by entering employee name</DialogTitle>
                 <DialogContent>
                     <TextField
-                        label="Type the first name of the employee to confirm"
+                        label="First name"
                         variant="outlined"
                         value={confirmName}
                         onChange={handleNameChange}
